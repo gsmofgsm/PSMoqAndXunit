@@ -26,6 +26,7 @@ namespace CreditCardApplications.Tests
         {
             var mockValidator =
                 new Mock<IFrequentFlyerNumberValidator>();
+            mockValidator.DefaultValue = DefaultValue.Mock;
 
             mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
 
@@ -43,6 +44,7 @@ namespace CreditCardApplications.Tests
         {
             Mock<IFrequentFlyerNumberValidator> mockValidator =
                 new Mock<IFrequentFlyerNumberValidator>();
+            mockValidator.Setup(x => x.ServiceInformation.License.LicenseKey).Returns("OK");
 
             //mockValidator.Setup(x => x.IsValid("x")).Returns(true); //if input is not "x", mock will return default, which is false
             //mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
@@ -75,6 +77,7 @@ namespace CreditCardApplications.Tests
         {
             Mock<IFrequentFlyerNumberValidator> mockValidator =
                 new Mock<IFrequentFlyerNumberValidator>();
+            mockValidator.Setup(x => x.ServiceInformation.License.LicenseKey).Returns("OK");
 
             mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(false);
 
