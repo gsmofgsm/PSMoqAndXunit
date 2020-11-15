@@ -8,14 +8,22 @@ namespace CreditCardApplications.Tests
 {
     public class CreditCardApplicationEvaluatorShould
     {
+        private Mock<IFrequentFlyerNumberValidator> mockValidator;
+        private CreditCardApplicationEvaluator sut;
+
+        public CreditCardApplicationEvaluatorShould()
+        {
+            mockValidator = new Mock<IFrequentFlyerNumberValidator>();
+            mockValidator.SetupAllProperties();
+            mockValidator.Setup(x => x.ServiceInformation.License.LicenseKey).Returns("OK");
+            mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
+
+            sut = new CreditCardApplicationEvaluator(mockValidator.Object);
+        }
+
         [Fact]
         public void AcceptHighIncomeApplications()
         {
-            Mock<IFrequentFlyerNumberValidator> mockValidator =
-                new Mock<IFrequentFlyerNumberValidator>();
-
-            var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
-
             var application = new CreditCardApplication { GrossAnnualIncome = 100_000 };
 
             CreditCardApplicationDecision decision = sut.Evaluate(application);
@@ -26,13 +34,7 @@ namespace CreditCardApplications.Tests
         [Fact]
         public void ReferYoungApplications()
         {
-            var mockValidator =
-                new Mock<IFrequentFlyerNumberValidator>();
             mockValidator.DefaultValue = DefaultValue.Mock;
-
-            mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
-
-            var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
 
             var application = new CreditCardApplication { Age = 19 };
 
