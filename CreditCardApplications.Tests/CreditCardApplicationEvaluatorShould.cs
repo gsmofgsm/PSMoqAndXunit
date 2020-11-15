@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Moq;
+using Moq.Protected;  // this allows us to mock protected methods
 using System.Collections.Generic;
 
 namespace CreditCardApplications.Tests
@@ -343,8 +344,11 @@ namespace CreditCardApplications.Tests
         {
             var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
             var mockFraudLookup = new Mock<FraudLookup>();
-            mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
-                .Returns(true); // IsFraudRisk must be virtual for this to work
+            //mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+            //    .Returns(true); // IsFraudRisk must be virtual for this to work
+            mockFraudLookup.Protected()
+                .Setup<bool>("CheckApplication", ItExpr.IsAny<CreditCardApplication>())
+                .Returns(true);
 
             var sut = new CreditCardApplicationEvaluator(mockValidator.Object, mockFraudLookup.Object);
 
