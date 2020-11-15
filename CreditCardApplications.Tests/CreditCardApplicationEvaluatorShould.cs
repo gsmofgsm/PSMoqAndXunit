@@ -45,8 +45,11 @@ namespace CreditCardApplications.Tests
             //mockValidator.Setup(x => x.IsValid("x")).Returns(true); //if input is not "x", mock will return default, which is false
             //mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
             //mockValidator.Setup(x => x.IsValid(It.Is<string>(number => number.StartsWith("y")))).Returns(true);
+            //mockValidator.Setup(
+            //    x => x.IsValid(It.IsInRange<string>("a", "z", Moq.Range.Inclusive)))
+            //    .Returns(true);
             mockValidator.Setup(
-                x => x.IsValid(It.IsInRange<string>("a", "z", Moq.Range.Inclusive)))
+                x => x.IsValid(It.IsIn<string>("a", "z", "y")))
                 .Returns(true);
             var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
 
