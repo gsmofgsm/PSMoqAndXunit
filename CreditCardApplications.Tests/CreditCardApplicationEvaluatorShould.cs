@@ -148,6 +148,9 @@ namespace CreditCardApplications.Tests
         {
             var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
 
+            //mockValidator.SetupProperty(x => x.ValidationMode);
+            mockValidator.SetupAllProperties(); // this must be before any other Setups, otherwize the other Setup will be overwritten
+
             mockValidator.Setup(x => x.ServiceInformation.License.LicenseKey).Returns("OK");
 
             var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
