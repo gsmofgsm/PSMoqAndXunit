@@ -238,6 +238,10 @@ namespace CreditCardApplications.Tests
 
             //mockValidator.VerifySet(x => x.ValidationMode = ValidationMode.Detailed);
             mockValidator.VerifySet(x => x.ValidationMode = It.IsAny<ValidationMode>(), Times.Once);
+
+            //mockValidator.Verify(x => x.IsValid(null), Times.Once);
+
+            //mockValidator.VerifyNoOtherCalls();
         }
     }
 }
