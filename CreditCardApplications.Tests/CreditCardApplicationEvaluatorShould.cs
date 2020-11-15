@@ -337,5 +337,21 @@ namespace CreditCardApplications.Tests
             // Assert that IsValid was called three times with "aa", "bb", and "cc"
             Assert.Equal(new List<string> { "aa", "bb", "cc" }, frequentFlyerNumberPassed);
         }
+
+        [Fact]
+        public void ReferFraudRisk()
+        {
+            var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
+            var mockFraudLookup = new Mock<FraudLookup>();
+            mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+                .Returns(true); // IsFraudRisk must be virtual for this to work
+
+            var sut = new CreditCardApplicationEvaluator(mockValidator.Object, mockFraudLookup.Object);
+
+            var application = new CreditCardApplication();
+
+            CreditCardApplicationDecision decision = sut.Evaluate(application);
+            Assert.Equal(CreditCardApplicationDecision.ReferredToHumanFraudRisk, decision);
+        }
     }
 }
